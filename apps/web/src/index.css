@@ -1,0 +1,402 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Alfa Romeo Design System — CSS variables ─────────────────────────────── */
+:root {
+  --ar-red:      #ba0816;
+  --ar-navy:     #1c1f2a;
+  --ar-dark:     #292b35;
+  --ar-slate:    #5d5e65;
+  --ar-light:    #f4f4f4;
+  --ar-offwhite: #dedede;
+  --ar-silver:   #c4c4c4;
+
+  /* Alfa Romeo gradients */
+  --ar-grad-left: linear-gradient(90deg, rgba(28,31,42,1), rgba(28,31,42,0.28), rgba(28,31,42,0));
+  --ar-grad-bottom: linear-gradient(0deg, rgba(28,31,42,1), rgba(28,31,42,0));
+}
+
+/* ── Base styles ──────────────────────────────────────────────────────────── */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: "Inter var", "Inter", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #f4f4f4;   /* AR Light Neutral */
+    color: #292b35;              /* AR Dark Navy */
+  }
+
+  /* AR zero-radius for all interactive elements */
+  button, input, select, textarea {
+    border-radius: 0 !important;
+  }
+}
+
+/* ── AR utility classes ───────────────────────────────────────────────────── */
+@layer components {
+
+  /* Section label — thin red line + uppercase tracked text */
+  .ar-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+  .ar-label::before {
+    content: "";
+    display: block;
+    width: 40px;
+    height: 2px;
+    background-color: var(--ar-red);
+    flex-shrink: 0;
+  }
+  .ar-label span {
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.09375rem;
+    text-transform: uppercase;
+    color: var(--ar-dark);
+  }
+
+  /* AR primary button — RED (the dominant action colour in this tool) */
+  .ar-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 15px 24px 13px;
+    background: var(--ar-red);
+    color: #ffffff;
+    border: 1px solid var(--ar-red);
+    border-radius: 0;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.09375rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s;
+    white-space: nowrap;
+  }
+  .ar-btn:hover  { background: #8e0d25; border-color: #8e0d25; }
+  .ar-btn:disabled {
+    background: var(--ar-silver); border-color: var(--ar-silver);
+    color: var(--ar-slate); cursor: not-allowed;
+  }
+
+  /* AR ghost button — red border text link */
+  .ar-btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 15px 24px 13px;
+    background: transparent;
+    color: var(--ar-red);
+    border: 1px solid var(--ar-red);
+    border-radius: 0;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.09375rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .ar-btn-ghost:hover {
+    background: var(--ar-red);
+    color: #ffffff;
+  }
+
+  /* AR button inverted — light on dark */
+  .ar-btn-light {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 15px 24px 13px;
+    background: var(--ar-light);
+    color: var(--ar-dark);
+    border: 1px solid var(--ar-light);
+    border-radius: 0;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.09375rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .ar-btn-light:hover {
+    background: #ffffff;
+    border-color: #ffffff;
+  }
+  .ar-btn-light:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* AR card — zero radius, silver border, flat */
+  .ar-card {
+    background: #ffffff;
+    border: 1px solid var(--ar-silver);
+    border-radius: 0;
+    padding: 1.25rem;
+  }
+
+  /* AR card on light surface */
+  .ar-card-light {
+    background: var(--ar-light);
+    border: 1px solid var(--ar-offwhite);
+    border-radius: 0;
+    padding: 1.25rem;
+  }
+
+  /* AR input */
+  .ar-input {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid var(--ar-silver);
+    border-radius: 0;
+    padding: 14px 16px;
+    font-size: 14px;
+    color: var(--ar-dark);
+    font-family: inherit;
+    transition: border-color 0.15s;
+  }
+  .ar-input::placeholder {
+    color: var(--ar-slate);
+  }
+  .ar-input:focus {
+    outline: none;
+    border-color: var(--ar-dark);
+  }
+  .ar-input-error {
+    border-color: #d51121;
+  }
+  .ar-input-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.09375rem;
+    text-transform: uppercase;
+    color: var(--ar-slate);
+    margin-bottom: 6px;
+  }
+
+  /* AR divider — Silver */
+  .ar-divider {
+    height: 1px;
+    background: var(--ar-silver);
+    border: none;
+  }
+
+  /* AR section — light surface */
+  .ar-section-light {
+    background: var(--ar-light);
+    padding: 3rem 0;
+  }
+
+  /* AR section — dark surface */
+  .ar-section-dark {
+    background: var(--ar-navy);
+    padding: 3rem 0;
+    color: var(--ar-light);
+  }
+
+  /* AR report section — zero radius, silver border */
+  .report-section {
+    background: #ffffff;
+    border: 1px solid #c4c4c4;
+    border-radius: 0;
+    padding: 1.75rem;
+  }
+
+  /* Override Tailwind's rounded utilities for report elements */
+  .report-section *,
+  .report-section .rounded-xl,
+  .report-section .rounded-2xl,
+  .report-section .rounded-lg,
+  .report-section .rounded-md {
+    border-radius: 0 !important;
+  }
+
+  /* Keep full-radius only for circles (avatars, score rings) */
+  .report-section .rounded-full {
+    border-radius: 9999px !important;
+  }
+}
+
+/* ── Spin animation (no Tailwind dependency) ─────────────────────────────── */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Cover page screen preview (A4 aspect ratio) ─────────────────────────── */
+.cover-screen-preview {
+  /* A4 portrait: 210 × 297mm = 1 : 1.4142 ratio */
+  aspect-ratio: 210 / 297;
+  width: 100%;
+  max-width: 860px;
+  min-height: 480px;
+  margin: 0 auto;
+}
+
+@media (max-width: 640px) {
+  .cover-screen-preview {
+    aspect-ratio: auto;
+    min-height: 520px;
+  }
+}
+
+/* ── Print / PDF styles ────────────────────────────────────────────────────── */
+@media print {
+  /* ── Page setup ───────────────────────────────────────────────────────────── */
+  /* Zero margins on ALL pages — content manages its own padding internally.    */
+  /* No running header or footer on any page.                                   */
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+  @page :first {
+    margin: 0;
+  }
+
+  /* ── Base ─────────────────────────────────────────────────────────────────── */
+  body {
+    background: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 9.5pt;
+    line-height: 1.45;
+    color: #111827;
+  }
+
+  /* Content wrapper: small padding so text never touches page edges */
+  #report-content {
+    padding: 5mm 7mm !important;
+    max-width: 100% !important;
+  }
+
+  /* Remove outer max-width constraint */
+  .max-w-5xl {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  /* ── Hide interactive/screen-only elements ──────────────────────────────── */
+  .print\:hidden   { display: none !important; }
+  .print-footer    { display: none !important; }  /* no running footer */
+  .print-toc       { display: none !important; }  /* TOC meaningless without page numbers */
+
+  /* ── Cover page — full bleed, exactly one A4 page ──────────────────────── */
+  .print-cover {
+    height: 297mm !important;
+    width: 210mm !important;
+    max-height: 297mm !important;
+    min-height: 297mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    border-radius: 0 !important;
+    position: relative;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: linear-gradient(135deg, #ffffff 0%, #FEF3E2 100%) !important;
+  }
+
+  .print-cover-inner {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    padding: 16mm 18mm 16mm 18mm !important;
+  }
+
+  /* ── Executive summary: flow immediately after cover ───────────────────── */
+  .print-exec-summary {
+    /* no forced page break — flows right after cover */
+  }
+
+  /* ── Section and element flow control ──────────────────────────────────── */
+  /* Avoid breaking inside stat cards, chart blocks, recommendation cards */
+  .print-section-break,
+  .print-keep-together {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Charts: keep together, slightly smaller for print */
+  .recharts-wrapper,
+  .recharts-responsive-container {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    max-width: 100% !important;
+  }
+  .recharts-wrapper { height: 200px !important; }
+
+  /* Tables */
+  table { font-size: 8.5pt; page-break-inside: auto; }
+  tr    { page-break-inside: avoid; break-inside: avoid; }
+  thead { display: table-header-group; }
+
+  /* Section spacing — compact in print */
+  .space-y-6 > * + * { margin-top: 7pt !important; }
+  .space-y-4 > * + * { margin-top: 5pt !important; }
+
+  /* ── Decoration cleanup ─────────────────────────────────────────────────── */
+  .shadow-sm, .shadow-md, .shadow-lg, .shadow-xl, .shadow-2xl {
+    box-shadow: none !important;
+  }
+  .rounded-2xl, .rounded-xl, .rounded-lg {
+    border-radius: 4px !important;
+  }
+
+  /* Ensure brand colors print */
+  .bg-cf-navy, .bg-cf-orange, .cover-screen-preview,
+  [class*="bg-red-"],   [class*="bg-green-"],
+  [class*="bg-yellow-"],[class*="bg-blue-"],
+  [class*="bg-orange-"] {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Typography */
+  h1 { font-size: 18pt; margin-bottom: 5pt; }
+  h2 { font-size: 13pt; margin-top: 8pt;  margin-bottom: 4pt; }
+  h3 { font-size: 11pt; margin-top: 6pt;  margin-bottom: 3pt; }
+}
+
+/* ── Recharts overrides ───────────────────────────────────────────────────── */
+.recharts-cartesian-axis-tick-value {
+  font-size: 10px;
+}
+
+.recharts-legend-item-text {
+  font-size: 11px !important;
+  color: #374151 !important;
+}
+
+/* ── Utility: Cloudflare brand scrollbar ──────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f3f4f6;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #F6821F;
+}

@@ -1,0 +1,20 @@
+node_modules/
+dist/
+.wrangler/
+.env
+.env.local
+.env.test
+.dev.vars
+.dev.vars.*
+playwright-report/
+test-results/
+*.log
+.DS_Store
+*.tsbuildinfo
+
+# Local-only wrangler config with real resource IDs — never commit this.
+# See wrangler.local.example.toml for the template.
+wrangler.local.toml
+
+# Internal planning notes — not part of the public project.
+/IMPLEMENTATION_PLAN_5_PHASES.md

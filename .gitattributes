@@ -1,0 +1,3 @@
+# Self-contained reports include generated/minified application and shader code.
+examples/*.html linguist-generated=true -whitespace
+examples/previews/*.png linguist-generated=true

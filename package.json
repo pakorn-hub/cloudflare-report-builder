@@ -1,0 +1,30 @@
+{
+  "name": "cloudflare-report-builder",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/api",
+    "apps/web"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace=apps/web",
+    "examples:build": "npm run build && node --experimental-strip-types scripts/render-examples.ts",
+    "examples:check": "tsc -p scripts/tsconfig.examples.json",
+    "deploy": "bash scripts/deploy.sh",
+    "dev:api": "wrangler dev",
+    "dev:web": "npm run dev --workspace=apps/web",
+    "cf-typegen": "wrangler types",
+    "typecheck": "npm run typecheck --workspace=apps/api && tsc -b apps/web/tsconfig.json",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:report": "playwright show-report",
+    "test:magic-transit": "playwright test --config playwright.magic-transit.config.ts",
+    "test:custom-dashboard": "playwright test --config playwright.custom-dashboard.config.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^22.20.5",
+    "dotenv": "^17.3.1",
+    "wrangler": "^4.69.0"
+  }
+}

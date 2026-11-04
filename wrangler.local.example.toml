@@ -1,0 +1,61 @@
+# Optional local override for `wrangler.toml`, used automatically by
+# `npm run deploy` (see scripts/deploy.sh) when present.
+#
+# This file is for people who already provisioned their own D1
+# database/account outside of the "Deploy to Cloudflare" button flow (which
+# auto-provisions everything from the committed wrangler.toml instead) and
+# want repeatable local deploys without ever committing their real resource
+# IDs to git.
+#
+# To use it:
+#   1. cp wrangler.local.example.toml wrangler.local.toml   (gitignored)
+#   2. npx wrangler d1 create poc-report-schedules
+#   3. Paste the returned database_id below.
+#   4. npm run deploy
+
+name = "cloudflare-report-builder"
+main = "apps/api/src/index.ts"
+compatibility_date = "2025-03-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Uncomment and set if you manage multiple Cloudflare accounts:
+# account_id = "your-32-char-account-id"
+
+[vars]
+ENVIRONMENT = "production"
+ALLOWED_ORIGIN = ""
+CF_ACCOUNT_ID = ""
+EMAIL_FROM = ""
+# Access-protected app: set the verified team domain and application AUD.
+# CF_ACCESS_TEAM_DOMAIN = "[PLACEHOLDER].cloudflareaccess.com"
+# CF_ACCESS_AUD = "[PLACEHOLDER]"
+# Alternatively set MANAGE_SECRET using `wrangler secret put MANAGE_SECRET`.
+
+[ai]
+binding = "AI"
+
+[browser]
+binding = "BROWSER"
+
+[[r2_buckets]]
+binding = "AUDIT_BUCKET"
+bucket_name = "poc-report-audit"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "poc-report-schedules"
+database_id = "PASTE-YOUR-DATABASE-ID-HERE"
+
+[[send_email]]
+name = "EMAIL"
+
+[triggers]
+crons = ["0 * * * *"]
+
+[assets]
+# Exposed to the Worker as env.ASSETS — the scheduled-email attachment
+# builder reads the single-chunk static-report bundle through this binding.
+binding = "ASSETS"
+directory = "apps/web/dist"
+not_found_handling = "single-page-application"
+run_worker_first = ["/api/*", "/health"]

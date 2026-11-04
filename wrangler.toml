@@ -1,0 +1,72 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "cloudflare-report-builder"
+main = "apps/api/src/index.ts"
+compatibility_date = "2025-03-01"
+compatibility_flags = ["nodejs_compat"]
+
+# No `account_id` here on purpose — wrangler uses whichever account you're
+# logged into (`wrangler login`). If you manage multiple accounts, set it in
+# `wrangler.local.toml` (gitignored) or pass `--account-id` at deploy time.
+
+[vars]
+ENVIRONMENT = "production"
+# Comma-separated list of extra allowed CORS origins, only needed if you run
+# the frontend on a *different* origin than this Worker (see the Pages
+# alternative topology in README.md). Same-origin deployments (the default,
+# via [assets] below) don't need this at all.
+ALLOWED_ORIGIN = "/"
+# Account the scheduled report runner + zone picker generate reports from.
+# Backend-bound only — never sent from the browser. Required for scheduled
+# email reports; the interactive report builder works without it (the user
+# supplies their own token + account ID in the form).
+CF_ACCOUNT_ID = "pakorn"
+# Sender address for scheduled report emails. The domain must be onboarded
+# to Cloudflare Email Sending: `npx wrangler email sending enable <domain>`.
+EMAIL_FROM = "pakorn@cloudflare.com"
+
+[ai]
+binding = "AI"
+
+# Automated dashboard PDFs use this binding; no separate rendering API token.
+[browser]
+binding = "BROWSER"
+
+[[r2_buckets]]
+binding = "AUDIT_BUCKET"
+bucket_name = "poc-report-audit"
+
+# D1 database for scheduled report configuration + send history.
+# No `database_id` here on purpose: the Deploy to Cloudflare button
+# auto-provisions a new database and writes the ID back to your fork. For
+# manual/CLI deploys, either let wrangler prompt you to create one, or set
+# `database_id` in `wrangler.local.toml` (gitignored) once you've run
+# `wrangler d1 create poc-report-schedules`.
+[[d1_databases]]
+binding = "DB"
+database_name = "poc-report-schedules"
+
+# Cloudflare Email Sending binding — powers scheduled report delivery.
+# Optional: the app works fully without it, just without scheduled emails.
+[[send_email]]
+name = "EMAIL"
+
+# Hourly due-check for scheduled report emails.
+[triggers]
+crons = ["0 * * * *"]
+
+# Serves the built frontend (apps/web/dist) from the same Worker/origin as
+# the API — no separate Pages project, no CORS. Build the frontend first
+# (`npm run build`) so this directory exists before `wrangler deploy`.
+[assets]
+# Exposed to the Worker as env.ASSETS — the scheduled-email attachment
+# builder reads the single-chunk static-report bundle through this binding.
+binding = "ASSETS"
+directory = "apps/web/dist"
+not_found_handling = "single-page-application"
+# /api/* and /health always run the Worker (Hono app below); every other
+# path is served as a static asset first, falling back to index.html (SPA)
+# when nothing matches.
+run_worker_first = ["/api/*", "/health"]
+
+# Deploy: `npm run deploy` (from the repo root) — builds the frontend, runs
+# D1 migrations, then `wrangler deploy`. See README.md for full setup.
